@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  reactive-app:
+    container_name: reactive-app
+#    image: jmoyano275/reactive-app-bank
+    build: .
+    ports:
+      - "8086:8086"
+    environment:
+      - MONGO_URI=mongodb://root:password@my-mongo:27017/admin
+      - INVENTORY_APP_PORT=8086
+      - RABBIT_SERVER_URI=amqp://guest:guest@myrabbitmq:5672
+    networks:
+      - my-network
+    restart: always
+
+    links:
+      - mongo-db
+  mongo-db:
+    container_name: my-mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - my-network
+
+  myrabbitmq:
+    container_name: my-rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
