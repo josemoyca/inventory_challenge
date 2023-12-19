@@ -1,31 +1,38 @@
 package demo.retail.inventory.models;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+
 @Document("inventory")
 public class Inventory {
     @Id
-    private String id;
+    private String Id;
     private Product product;
     private Integer availability;
     private Integer minStockLevel;
     private Integer maxStockLevel;
+    @Indexed(unique = true)
     private Integer reorderPoint;
+    @LastModifiedDate
     private LocalDateTime updatedAt;
+    @CreatedDate
     private LocalDateTime createdAt;
 
     public Inventory() {
     }
 
     public String getId() {
-        return id;
+        return Id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        Id = id;
     }
 
     public Product getProduct() {
@@ -89,18 +96,18 @@ public class Inventory {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Inventory inventory = (Inventory) object;
-        return Objects.equals(id, inventory.id);
+        return Objects.equals(Id, inventory.Id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(Id);
     }
 
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Inventory{");
-        sb.append("id='").append(id).append('\'');
+        sb.append("Id='").append(Id).append('\'');
         sb.append(", product=").append(product);
         sb.append(", availability=").append(availability);
         sb.append(", minStockLevel=").append(minStockLevel);

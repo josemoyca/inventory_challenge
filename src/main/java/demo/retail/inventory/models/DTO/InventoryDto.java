@@ -1,13 +1,12 @@
 package demo.retail.inventory.models.DTO;
 
-import demo.retail.inventory.models.Inventory;
 import demo.retail.inventory.models.Product;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class InventoryDto {
-    private String id;
+    private String Id;
     private Product product;
     private Integer availability;
     private Integer minStockLevel;
@@ -20,11 +19,11 @@ public class InventoryDto {
     }
 
     public String getId() {
-        return id;
+        return Id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        Id = id;
     }
 
     public Product getProduct() {
@@ -88,18 +87,18 @@ public class InventoryDto {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         InventoryDto that = (InventoryDto) object;
-        return Objects.equals(id, that.id);
+        return Objects.equals(Id, that.Id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(Id);
     }
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Inventory{");
-        sb.append("id='").append(id).append('\'');
+        final StringBuffer sb = new StringBuffer("InventoryDto{");
+        sb.append("Id='").append(Id).append('\'');
         sb.append(", product=").append(product);
         sb.append(", availability=").append(availability);
         sb.append(", minStockLevel=").append(minStockLevel);
