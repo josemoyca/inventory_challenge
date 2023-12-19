@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -14,13 +15,16 @@ public class Product {
     private String code;
     private String description;
     private String brand;
+    private BigDecimal cost;
+    private String vendor;
+    private String batch;
     private BigDecimal unitPrice;
-    private BigDecimal wholesaleAmount;
+    private Integer wholesaleQuantity;
     private BigDecimal wholesaleDiscount;
     private Double wholesalePercentage;
-    private BigDecimal retailAmount;
     private BigDecimal retailDiscount;
     private Double retailPercentage;
+    private LocalDate sellByDate;
     private LocalDateTime updatedAt;
     private LocalDateTime createdAt;
 
@@ -67,12 +71,8 @@ public class Product {
         this.unitPrice = unitPrice;
     }
 
-    public BigDecimal getWholesaleAmount() {
-        return wholesaleAmount;
-    }
-
-    public void setWholesaleAmount(BigDecimal wholesaleAmount) {
-        this.wholesaleAmount = wholesaleAmount;
+    public Integer getWholesaleQuantity() {
+        return wholesaleQuantity;
     }
 
     public BigDecimal getWholesaleDiscount() {
@@ -91,12 +91,40 @@ public class Product {
         this.wholesalePercentage = wholesalePercentage;
     }
 
-    public BigDecimal getRetailAmount() {
-        return retailAmount;
+    public BigDecimal getCost() {
+        return cost;
     }
 
-    public void setRetailAmount(BigDecimal retailAmount) {
-        this.retailAmount = retailAmount;
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
+
+    public String getBatch() {
+        return batch;
+    }
+
+    public void setBatch(String batch) {
+        this.batch = batch;
+    }
+
+    public void setWholesaleQuantity(Integer wholesaleQuantity) {
+        this.wholesaleQuantity = wholesaleQuantity;
+    }
+
+    public LocalDate getSellByDate() {
+        return sellByDate;
+    }
+
+    public void setSellByDate(LocalDate sellByDate) {
+        this.sellByDate = sellByDate;
     }
 
     public BigDecimal getRetailDiscount() {
@@ -151,13 +179,16 @@ public class Product {
         sb.append(", code='").append(code).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", brand='").append(brand).append('\'');
+        sb.append(", cost=").append(cost);
+        sb.append(", vendor='").append(vendor).append('\'');
+        sb.append(", batch='").append(batch).append('\'');
         sb.append(", unitPrice=").append(unitPrice);
-        sb.append(", wholesaleAmount=").append(wholesaleAmount);
+        sb.append(", wholesaleQuantity=").append(wholesaleQuantity);
         sb.append(", wholesaleDiscount=").append(wholesaleDiscount);
         sb.append(", wholesalePercentage=").append(wholesalePercentage);
-        sb.append(", retailAmount=").append(retailAmount);
         sb.append(", retailDiscount=").append(retailDiscount);
         sb.append(", retailPercentage=").append(retailPercentage);
+        sb.append(", sellByDate=").append(sellByDate);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", createdAt=").append(createdAt);
         sb.append('}');
