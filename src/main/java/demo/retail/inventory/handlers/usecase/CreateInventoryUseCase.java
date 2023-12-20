@@ -1,7 +1,7 @@
 package demo.retail.inventory.handlers.usecase;
 
 import demo.retail.inventory.drivenAdapters.repositories.IInventoryRepository;
-import demo.retail.inventory.mapper.InventoryMapper;
+import demo.retail.inventory.models.mapper.InventoryMapper;
 import demo.retail.inventory.models.DTO.InventoryDto;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
