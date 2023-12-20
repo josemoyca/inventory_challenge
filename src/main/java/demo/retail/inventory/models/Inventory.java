@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -12,7 +13,8 @@ import java.util.Objects;
 @Document("inventory")
 public class Inventory {
     @Id
-    private String Id;
+    private String id;
+    @Field("product")
     private Product product;
     private Integer availability;
     private Integer minStockLevel;
@@ -28,11 +30,11 @@ public class Inventory {
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
 
     public Product getProduct() {
@@ -96,18 +98,18 @@ public class Inventory {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Inventory inventory = (Inventory) object;
-        return Objects.equals(Id, inventory.Id);
+        return Objects.equals(id, inventory.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id);
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Inventory{");
-        sb.append("Id='").append(Id).append('\'');
+        sb.append("id='").append(id).append('\'');
         sb.append(", product=").append(product);
         sb.append(", availability=").append(availability);
         sb.append(", minStockLevel=").append(minStockLevel);
