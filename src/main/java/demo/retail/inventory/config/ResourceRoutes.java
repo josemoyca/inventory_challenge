@@ -1,11 +1,14 @@
 package demo.retail.inventory.config;
 
+import demo.retail.inventory.handlers.exception.ResourceBadRequestException;
+import demo.retail.inventory.handlers.exception.ResourceNotFoundException;
 import demo.retail.inventory.handlers.usecase.*;
 import demo.retail.inventory.models.DTO.InventoryDto;
 import demo.retail.inventory.models.DTO.SalesDTO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -60,7 +63,11 @@ public class ResourceRoutes {
                         .flatMap(salesDto -> createDetailSaleUseCase.apply(salesDto)
                                 .flatMap(result -> ServerResponse.ok()
                                         .contentType(MediaType.APPLICATION_JSON)
-                                        .bodyValue(result))));
+                                        .bodyValue(result)))
+                        .onErrorResume(ResourceNotFoundException.class, e -> ServerResponse.status(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_JSON)
+                                .body(BodyInserters.fromValue("Error occurred: " + e.getMessage())))
+                        .onErrorResume(ResourceBadRequestException.class, e -> ServerResponse.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON)
+                                .body(BodyInserters.fromValue("Error occurred: " + e.getMessage()))));
     }
 
     @Bean
@@ -71,7 +78,11 @@ public class ResourceRoutes {
                         .flatMap(salesDto -> createWholeSaleUseCase.apply(salesDto)
                                 .flatMap(result -> ServerResponse.ok()
                                         .contentType(MediaType.APPLICATION_JSON)
-                                        .bodyValue(result))));
+                                        .bodyValue(result)))
+                        .onErrorResume(ResourceNotFoundException.class, e -> ServerResponse.status(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_JSON)
+                                .body(BodyInserters.fromValue("Error occurred: " + e.getMessage())))
+                        .onErrorResume(ResourceBadRequestException.class, e -> ServerResponse.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON)
+                                .body(BodyInserters.fromValue("Error occurred: " + e.getMessage()))));
     }
 
 }
