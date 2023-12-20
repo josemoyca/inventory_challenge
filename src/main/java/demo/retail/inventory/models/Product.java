@@ -3,29 +3,36 @@ package demo.retail.inventory.models;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Document("Product")
+@Document("products")
 public class Product {
     @Id
-    private String Id;
-    @Indexed( unique = true)
+    private String id;
+    @Indexed(unique = true)
+    @Field("code")
     private String code;
     private String description;
     private String brand;
+    @Field(name = "cost", targetType = FieldType.DECIMAL128)
     private BigDecimal cost;
     private String vendor;
     private String batch;
+    @Field(name = "unitPrice", targetType = FieldType.DECIMAL128)
     private BigDecimal unitPrice;
     private Integer wholesaleQuantity;
+    @Field(name = "wholesaleDiscount", targetType = FieldType.DECIMAL128)
     private BigDecimal wholesaleDiscount;
     private Double wholesalePercentage;
+    @Field(name = "retailDiscount", targetType = FieldType.DECIMAL128)
     private BigDecimal retailDiscount;
     private Double retailPercentage;
     private LocalDate sellByDate;
@@ -38,11 +45,11 @@ public class Product {
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getCode() {
@@ -181,7 +188,7 @@ public class Product {
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Product{");
-        sb.append("Id='").append(Id).append('\'');
+        sb.append("id='").append(id).append('\'');
         sb.append(", code='").append(code).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", brand='").append(brand).append('\'');
