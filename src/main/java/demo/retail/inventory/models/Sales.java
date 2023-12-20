@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Document("sales")
@@ -13,12 +14,12 @@ public class Sales {
     private String Id;
     private String productId;
     private String type;
-    private String quantity;
-    private String discountApplied;
+    private Integer quantity;
+    private Double discountApplied;
     @LastModifiedDate
-    private String updatedAt;
+    private LocalDateTime updatedAt;
     @CreatedDate
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     public Sales() {
     }
@@ -47,35 +48,35 @@ public class Sales {
         this.type = type;
     }
 
-    public String getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public String getDiscountApplied() {
+    public Double getDiscountApplied() {
         return discountApplied;
     }
 
-    public void setDiscountApplied(String discountApplied) {
+    public void setDiscountApplied(Double discountApplied) {
         this.discountApplied = discountApplied;
     }
 
-    public String getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public String getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -98,10 +99,10 @@ public class Sales {
         sb.append("Id='").append(Id).append('\'');
         sb.append(", productId='").append(productId).append('\'');
         sb.append(", type='").append(type).append('\'');
-        sb.append(", quantity='").append(quantity).append('\'');
-        sb.append(", discountApplied='").append(discountApplied).append('\'');
-        sb.append(", updatedAt='").append(updatedAt).append('\'');
-        sb.append(", createdAt='").append(createdAt).append('\'');
+        sb.append(", quantity=").append(quantity);
+        sb.append(", discountApplied=").append(discountApplied);
+        sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", createdAt=").append(createdAt);
         sb.append('}');
         return sb.toString();
     }
