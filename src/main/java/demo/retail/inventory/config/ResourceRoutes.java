@@ -1,9 +1,8 @@
 package demo.retail.inventory.config;
 
-import demo.retail.inventory.handlers.usecase.CreateBatchInventoryUseCase;
-import demo.retail.inventory.handlers.usecase.CreateInventoryUseCase;
-import demo.retail.inventory.handlers.usecase.GetPageableInventoryUseCase;
+import demo.retail.inventory.handlers.usecase.*;
 import demo.retail.inventory.models.DTO.InventoryDto;
+import demo.retail.inventory.models.DTO.SalesDTO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
@@ -51,6 +50,28 @@ public class ResourceRoutes {
                         ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
                                 .body(createBatchInventoryUseCase.apply(request.bodyToFlux(InventoryDto.class)), InventoryDto.class)
         );
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> createDetailSale(CreateDetailSaleUseCase createDetailSaleUseCase) {
+        return route(POST("/api/v1/sales/detail")
+                        .and(accept(MediaType.APPLICATION_JSON)),
+                request -> request.bodyToMono(SalesDTO.class)
+                        .flatMap(salesDto -> createDetailSaleUseCase.apply(salesDto)
+                                .flatMap(result -> ServerResponse.ok()
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .bodyValue(result))));
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> createWholeSale(CreateWholeSaleUseCase createWholeSaleUseCase) {
+        return route(POST("/api/v1/sales/wholesale")
+                        .and(accept(MediaType.APPLICATION_JSON)),
+                request -> request.bodyToMono(SalesDTO.class)
+                        .flatMap(salesDto -> createWholeSaleUseCase.apply(salesDto)
+                                .flatMap(result -> ServerResponse.ok()
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .bodyValue(result))));
     }
 
 }

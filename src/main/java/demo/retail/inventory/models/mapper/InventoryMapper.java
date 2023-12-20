@@ -1,4 +1,4 @@
-package demo.retail.inventory.mapper;
+package demo.retail.inventory.models.mapper;
 
 import demo.retail.inventory.models.DTO.InventoryDto;
 import demo.retail.inventory.models.Inventory;
