@@ -1,12 +1,13 @@
 package demo.retail.inventory.handlers.usecase;
 
+import demo.retail.inventory.drivenAdapters.bus.RabbitMqPublisher;
 import demo.retail.inventory.drivenAdapters.repositories.IInventoryRepository;
 import demo.retail.inventory.drivenAdapters.repositories.ISalesRepository;
 import demo.retail.inventory.handlers.exception.ResourceBadRequestException;
 import demo.retail.inventory.handlers.exception.ResourceNotFoundException;
 import demo.retail.inventory.models.DTO.SalesDTO;
-import demo.retail.inventory.models.Inventory;
-import demo.retail.inventory.models.SalesTypes;
+import demo.retail.inventory.models.Record;
+import demo.retail.inventory.models.*;
 import demo.retail.inventory.models.mapper.SalesMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -18,10 +19,12 @@ public class CreateWholeSaleUseCase {
 
     private ISalesRepository salesRepository;
     private IInventoryRepository inventoryRepository;
+    private RabbitMqPublisher eventBus;
 
-    public CreateWholeSaleUseCase(ISalesRepository salesRepository, IInventoryRepository inventoryRepository) {
+    public CreateWholeSaleUseCase(ISalesRepository salesRepository, IInventoryRepository inventoryRepository, RabbitMqPublisher eventBus) {
         this.salesRepository = salesRepository;
         this.inventoryRepository = inventoryRepository;
+        this.eventBus = eventBus;
     }
 
     public Mono<SalesDTO> apply(SalesDTO salesDTO) {
@@ -30,6 +33,12 @@ public class CreateWholeSaleUseCase {
                     if (inventory.getId() == null) {
                         String message = String.format("Inventory id %s not found", salesDTO.getProductId());
                         System.out.println(message);
+                        eventBus.publishMessage(
+                                new Record(
+                                        EventTypes.ERROR.toString(),
+                                        RecordTypes.WHOLESALE.toString(),
+                                        salesDTO.toString(),
+                                        message));
                         return Mono.error(new ResourceNotFoundException(message));
                     }
 
@@ -40,6 +49,12 @@ public class CreateWholeSaleUseCase {
                                 inventory.getProduct().getWholesaleQuantity(),
                                 inventory.getId());
                         System.out.println(message);
+                        eventBus.publishMessage(
+                                new Record(
+                                        EventTypes.ERROR.toString(),
+                                        RecordTypes.WHOLESALE.toString(),
+                                        salesDTO.toString(),
+                                        message));
                         return Mono.error(new ResourceBadRequestException(message));
                     }
 
@@ -48,6 +63,14 @@ public class CreateWholeSaleUseCase {
                     System.out.println("creating sale for wholesale");
                     return salesRepository.save(SalesMapper.getSales(salesDTO));
                 })
-                .map(SalesMapper::getSalesDTO);
+                .map(sales -> {
+                    eventBus.publishMessage(
+                            new Movement(
+                                    sales.getProductId(),
+                                    RecordTypes.WHOLESALE.toString(),
+                                    sales.getQuantity(),
+                                    sales.getCreatedAt().toString()));
+                    return SalesMapper.getSalesDTO(sales);
+                });
     }
 }
