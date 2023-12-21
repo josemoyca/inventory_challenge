@@ -26,7 +26,7 @@ public class CreateBatchInventoryUseCase {
     public Flux<InventoryDto> apply(Flux<InventoryDto> inventoryDtos) {
         return repository.saveAll(inventoryDtos.map(InventoryMapper::getInventory))
                 .map(inventory -> {
-                    eventBus.publishMessage(
+                    eventBus.publishLogs(
                             new Record(
                                     EventTypes.INFO.toString(),
                                     RecordTypes.INVENTORY_POST_BATCH.toString(),

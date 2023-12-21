@@ -3,6 +3,7 @@ package demo.retail.inventory.handlers.usecase;
 import demo.retail.inventory.drivenAdapters.bus.RabbitMqPublisher;
 import demo.retail.inventory.drivenAdapters.repositories.IInventoryRepository;
 import demo.retail.inventory.drivenAdapters.repositories.ISalesRepository;
+import demo.retail.inventory.handlers.exception.ResourceBadRequestException;
 import demo.retail.inventory.handlers.exception.ResourceNotFoundException;
 import demo.retail.inventory.models.DTO.SalesDTO;
 import demo.retail.inventory.models.Record;
@@ -31,7 +32,7 @@ public class CreateDetailSaleUseCase {
                     if (inventory.getId() == null) {
                         String message = String.format("Inventory id %s not found", salesDTO.getProductId());
                         System.out.println(message);
-                        eventBus.publishMessage(
+                        eventBus.publishLogs(
                                 new Record(
                                         EventTypes.ERROR.toString(),
                                         RecordTypes.RETAIL_SALE.toString(),
@@ -39,6 +40,12 @@ public class CreateDetailSaleUseCase {
                                         message));
                         return Mono.error(new ResourceNotFoundException(message));
                     }
+                    if (salesDTO.getQuantity() > inventory.getAvailability())
+                        return buildBadRequestError("La cantidad pedida (%s) es mayor a lo disponible (%s) para este producto %s",
+                                salesDTO,
+                                inventory.getAvailability(),
+                                inventory);
+
                     salesDTO.setType(SalesTypes.DETAIL.toString());
                     salesDTO.setDiscountApplied(inventory.getProduct().getRetailPercentage());
 
@@ -54,5 +61,23 @@ public class CreateDetailSaleUseCase {
                                     sales.getCreatedAt().toString()));
                     return SalesMapper.getSalesDTO(sales);
                 });
+    }
+
+    private Mono<Sales> buildBadRequestError(String format, SalesDTO salesDTO, Integer inventory, Inventory inventory1) {
+        String message = String.format(
+                format,
+                salesDTO.getQuantity(),
+                inventory,
+                inventory1.getId());
+
+        System.out.println(message);
+
+        eventBus.publishLogs(
+                new Record(
+                        EventTypes.ERROR.toString(),
+                        RecordTypes.WHOLESALE.toString(),
+                        salesDTO.toString(),
+                        message));
+        return Mono.error(new ResourceBadRequestException(message));
     }
 }
