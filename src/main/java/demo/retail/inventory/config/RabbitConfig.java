@@ -28,6 +28,7 @@ public class RabbitConfig {
 
     public static final String QUEUE_MOVEMENTS = "movements-queue";
     public static final String QUEUE_RECORD = "record-queue";
+    public static final String QUEUE_AVAILABILITY = "availability-queue";
     public static final String EXCHANGE_NAME = "base-exchange";
     public static final String ROUTING_MOVEMENTS_KEY_NAME = "movements.routing.key";
     public static final String ROUTING_RECORD_KEY_NAME = "record.routing.key";
@@ -40,15 +41,18 @@ public class RabbitConfig {
         var exchange = new TopicExchange(EXCHANGE_NAME);
         var movementsQueue = new Queue(QUEUE_MOVEMENTS, true, false, false);
         var recordsQueue = new Queue(QUEUE_RECORD, true, false, false);
+        var availabilityQueue = new Queue(QUEUE_AVAILABILITY, true, false, false);
 
         amqpAdmin.declareExchange(exchange);
 
         amqpAdmin.declareQueue(movementsQueue);
         amqpAdmin.declareQueue(recordsQueue);
+        amqpAdmin.declareQueue(availabilityQueue);
 
         amqpAdmin.declareBinding(BindingBuilder.bind(recordsQueue).to(exchange).with(ROUTING_RECORD_KEY_NAME));
         amqpAdmin.declareBinding(BindingBuilder.bind(recordsQueue).to(exchange).with(ROUTING_MOVEMENTS_KEY_NAME));
         amqpAdmin.declareBinding(BindingBuilder.bind(movementsQueue).to(exchange).with(ROUTING_MOVEMENTS_KEY_NAME));
+        amqpAdmin.declareBinding(BindingBuilder.bind(availabilityQueue).to(exchange).with(ROUTING_MOVEMENTS_KEY_NAME));
 
         return amqpAdmin;
     }
