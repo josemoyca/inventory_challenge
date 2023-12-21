@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lb-inventory-app
+spec:
+  selector:
+    matchLabels:
+      role: lb-inventory-app
+  template:
+    metadata:
+      labels:
+        role: lb-inventory-app
+    spec:
+      containers:
+        - name: lb-inventory-app
+          image: jmoyano275/inventory-demo-app:latest
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: secret-inventory
+                  key: mongo-uri
+            - name: INVENTORY_APP_PORT
+              value: "8086"
+            - name: RABBIT_SERVER_URI
+              valueFrom:
+                secretKeyRef:
+                  name: secret-inventory
+                  key: rabbit-uri
+          ports:
+            - containerPort: 8086
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lb-inventory-app-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8086
+      targetPort: 8086
+      nodePort: 32086
+  selector:
+    role: lb-inventory-app

@@ -1,0 +1,355 @@
+{
+	"info": {
+		"_postman_id": "cd9042f3-fe2d-4bb6-be6f-16a7517a9abe",
+		"name": "challenge-inventory",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9052208",
+		"_collection_link": "https://xworkspace.postman.co/workspace/Team-Workspace~6f993871-13cf-4800-8c8b-7ea7ad14b276/collection/9052208-cd9042f3-fe2d-4bb6-be6f-16a7517a9abe?action=share&source=collection_link&creator=9052208"
+	},
+	"item": [
+		{
+			"name": "inventories",
+			"item": [
+				{
+					"name": "inventories",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product\": {\n        \"code\": \"TEC001\",\n        \"description\": \"Smartphone\",\n        \"brand\": \"Xiaomi\",\n        \"cost\": 399.99,\n        \"vendor\": \"Tech Corporation\",\n        \"batch\": \"BATCH-001\",\n        \"unitPrice\": 499.99,\n        \"wholesaleQuantity\": 10,\n        \"wholesaleDiscount\": 50.00,\n        \"wholesalePercentage\": 10.00,\n        \"retailDiscount\": 20.00,\n        \"retailPercentage\": 5.00,\n        \"sellByDate\": \"2024-12-31\"\n    },\n    \"availability\": 50,\n    \"minStockLevel\": 10,\n    \"maxStockLevel\": 100,\n    \"reorderPoint\": 20\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{inventory-app}}/api/v1/inventories",
+							"protocol": "http",
+							"host": [
+								"{{inventory-app}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventories"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "samsung",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"product\": {\n        \"code\": \"TEC001\",\n        \"description\": \"Smartphone\",\n        \"brand\": \"Xiaomi\",\n        \"cost\": 399.99,\n        \"vendor\": \"Tech Corporation\",\n        \"batch\": \"BATCH-001\",\n        \"unitPrice\": 499.99,\n        \"wholesaleQuantity\": 10,\n        \"wholesaleDiscount\": 50.00,\n        \"wholesalePercentage\": 10.00,\n        \"retailDiscount\": 20.00,\n        \"retailPercentage\": 5.00,\n        \"sellByDate\": \"2024-12-31\"\n    },\n    \"availability\": 50,\n    \"minStockLevel\": 10,\n    \"maxStockLevel\": 100,\n    \"reorderPoint\": 20\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8086/api/v1/inventories",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8086",
+									"path": [
+										"api",
+										"v1",
+										"inventories"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Inventories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{inventory-app}}/api/v1/inventories",
+							"protocol": "http",
+							"host": [
+								"{{inventory-app}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventories"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "inventories/batch",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"product\": {\n            \"code\": \"TEC001\",\n            \"description\": \"Smartphone\",\n            \"brand\": \"Xiaomi\",\n            \"cost\": 399.99,\n            \"vendor\": \"Tech Corporation\",\n            \"batch\": \"BATCH-002\",\n            \"unitPrice\": 499.99,\n            \"wholesaleQuantity\": 10,\n            \"wholesaleDiscount\": 50.00,\n            \"wholesalePercentage\": 10.00,\n            \"retailDiscount\": 20.00,\n            \"retailPercentage\": 5.00,\n            \"sellByDate\": \"2024-12-31\"\n        },\n        \"availability\": 50,\n        \"minStockLevel\": 10,\n        \"maxStockLevel\": 100,\n        \"reorderPoint\": 20\n    },\n    {\n        \"product\": {\n            \"code\": \"FUH002\",\n            \"description\": \"Furniture Cabinet\",\n            \"brand\": \"Arhaus\",\n            \"cost\": 299.99,\n            \"vendor\": \"Algoca C.A.\",\n            \"batch\": \"BATCH-002\",\n            \"unitPrice\": 499.99,\n            \"wholesaleQuantity\": 5,\n            \"wholesaleDiscount\": 40.00,\n            \"wholesalePercentage\": 10.00,\n            \"retailDiscount\": 25.00,\n            \"retailPercentage\": 5.00,\n            \"sellByDate\": \"2024-12-30\"\n        },\n        \"availability\": 17,\n        \"minStockLevel\": 10,\n        \"maxStockLevel\": 40,\n        \"reorderPoint\": 15\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{inventory-app}}/api/v1/inventories/batch",
+							"protocol": "http",
+							"host": [
+								"{{inventory-app}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventories",
+								"batch"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "samsung",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"product\": {\n        \"code\": \"TEC001\",\n        \"description\": \"Smartphone\",\n        \"brand\": \"Xiaomi\",\n        \"cost\": 399.99,\n        \"vendor\": \"Tech Corporation\",\n        \"batch\": \"BATCH-001\",\n        \"unitPrice\": 499.99,\n        \"wholesaleQuantity\": 10,\n        \"wholesaleDiscount\": 50.00,\n        \"wholesalePercentage\": 10.00,\n        \"retailDiscount\": 20.00,\n        \"retailPercentage\": 5.00,\n        \"sellByDate\": \"2024-12-31\"\n    },\n    \"availability\": 50,\n    \"minStockLevel\": 10,\n    \"maxStockLevel\": 100,\n    \"reorderPoint\": 20\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8086/api/v1/inventories",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8086",
+									"path": [
+										"api",
+										"v1",
+										"inventories"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Sales",
+			"item": [
+				{
+					"name": "Sales Detail",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": \"658255e44227325f6af822b0\",\n    \"quantity\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{inventory-app}}/api/v1/sales/detail",
+							"protocol": "http",
+							"host": [
+								"{{inventory-app}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sales",
+								"detail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sholesale",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": \"658255e44227325f6af822b0\",\n    \"quantity\": 12\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{inventory-app}}/api/v1/sales/wholesale",
+							"protocol": "http",
+							"host": [
+								"{{inventory-app}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sales",
+								"wholesale"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Records",
+			"item": [
+				{
+					"name": "records",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{tracking-app}}/api/v1/records?page=0",
+							"protocol": "http",
+							"host": [
+								"{{tracking-app}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"records"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "error",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{tracking-app}}/api/v1/records/error",
+							"protocol": "http",
+							"host": [
+								"{{tracking-app}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"records",
+								"error"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movements",
+			"item": [
+				{
+					"name": "Movements by product Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{tracking-app}}/api/v1/movements/658255e44227325f6af822b0",
+							"protocol": "http",
+							"host": [
+								"{{tracking-app}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"movements",
+								"658255e44227325f6af822b0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "retail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{tracking-app}}/api/v1/movements/retail",
+							"protocol": "http",
+							"host": [
+								"{{tracking-app}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"movements",
+								"retail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "wholesale",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{tracking-app}}/api/v1/movements/wholesale",
+							"protocol": "http",
+							"host": [
+								"{{tracking-app}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"movements",
+								"wholesale"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
