@@ -33,7 +33,7 @@ public class CreateWholeSaleUseCase {
                     if (inventory.getId() == null) {
                         String message = String.format("Inventory id %s not found", salesDTO.getProductId());
                         System.out.println(message);
-                        eventBus.publishMessage(
+                        eventBus.publishLogs(
                                 new Record(
                                         EventTypes.ERROR.toString(),
                                         RecordTypes.WHOLESALE.toString(),
@@ -42,21 +42,19 @@ public class CreateWholeSaleUseCase {
                         return Mono.error(new ResourceNotFoundException(message));
                     }
 
-                    if (salesDTO.getQuantity() < inventory.getProduct().getWholesaleQuantity()) {
-                        String message = String.format(
-                                "La cantidad pedida (%s) es menor al minimo establecido para venta al mayor (%s) de este inventorio %s",
-                                salesDTO.getQuantity(),
+                    if (salesDTO.getQuantity() > inventory.getAvailability())
+                        return buildBadRequestError("La cantidad pedida (%s) es mayor a lo disponible (%s) para este producto %s",
+                                salesDTO,
+                                inventory.getAvailability(),
+                                inventory);
+
+
+                    if (salesDTO.getQuantity() < inventory.getProduct().getWholesaleQuantity())
+                        return buildBadRequestError("La cantidad pedida (%s) es menor al minimo establecido para venta al mayor (%s) de este inventorio %s",
+                                salesDTO,
                                 inventory.getProduct().getWholesaleQuantity(),
-                                inventory.getId());
-                        System.out.println(message);
-                        eventBus.publishMessage(
-                                new Record(
-                                        EventTypes.ERROR.toString(),
-                                        RecordTypes.WHOLESALE.toString(),
-                                        salesDTO.toString(),
-                                        message));
-                        return Mono.error(new ResourceBadRequestException(message));
-                    }
+                                inventory);
+
 
                     salesDTO.setType(SalesTypes.WHOLESALE.toString());
                     salesDTO.setDiscountApplied(inventory.getProduct().getWholesalePercentage());
@@ -72,5 +70,23 @@ public class CreateWholeSaleUseCase {
                                     sales.getCreatedAt().toString()));
                     return SalesMapper.getSalesDTO(sales);
                 });
+    }
+
+    private Mono<Sales> buildBadRequestError(String format, SalesDTO salesDTO, Integer inventory, Inventory inventory1) {
+        String message = String.format(
+                format,
+                salesDTO.getQuantity(),
+                inventory,
+                inventory1.getId());
+
+        System.out.println(message);
+
+        eventBus.publishLogs(
+                new Record(
+                        EventTypes.ERROR.toString(),
+                        RecordTypes.WHOLESALE.toString(),
+                        salesDTO.toString(),
+                        message));
+        return Mono.error(new ResourceBadRequestException(message));
     }
 }

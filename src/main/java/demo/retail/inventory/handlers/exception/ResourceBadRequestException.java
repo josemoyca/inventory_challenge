@@ -1,9 +1,6 @@
 package demo.retail.inventory.handlers.exception;
 
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
 public class ResourceBadRequestException extends Exception {
     private static final long serialVersionUID = -4012754020476533151L;
 

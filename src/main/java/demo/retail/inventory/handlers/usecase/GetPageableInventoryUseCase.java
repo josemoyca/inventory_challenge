@@ -29,7 +29,7 @@ public class GetPageableInventoryUseCase implements Function<Pageable, Flux<Inve
     public Flux<InventoryDto> apply(Pageable pageable) {
         return repository.findAllBy(pageable)
                 .map(inventory -> {
-                    eventBus.publishMessage(
+                    eventBus.publishLogs(
                             new Record(
                                     EventTypes.INFO.toString(),
                                     RecordTypes.INVENTORY_GET.toString(),
